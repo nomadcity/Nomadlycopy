@@ -11,7 +11,7 @@ const createShortUrlApiLayer = async longUrl => {
         apikey: apiKey,
       },
     })
-    return response.short_url
+    return response.data.short_url
   } catch (err) {
     console.error('Error creating short URL:', err)
   }
