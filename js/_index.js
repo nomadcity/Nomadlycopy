@@ -92,6 +92,7 @@ const { validateBulkNumbers } = require('./validatePhoneBulk.js')
 const { countryCodeOf, areasOfCountry } = require('./areasOfCountry.js')
 const { validatePhoneBulkFile } = require('./validatePhoneBulkFile.js')
 const createCustomShortUrlCuttly = require('./customCuttly.js')
+const createShortUrlApiLayer = require('./apilayer.js')
 
 process.env['NTBA_FIX_350'] = 1
 const DB_NAME = process.env.DB_NAME
@@ -1025,6 +1026,7 @@ bot.on('message', async msg => {
       return goto.redSelectRandomCustom()
     }
   }
+
   if (action === a.redSelectRandomCustom) {
     if (message === 'Back') return goto.redSelectProvider()
 
@@ -1037,7 +1039,7 @@ bot.on('message', async msg => {
         const { url } = info
         const slug = nanoid()
         const __shortUrl = `${SELF_URL}/${slug}`
-        const _shortUrl = await createShortUrlCuttly(__shortUrl)
+        const _shortUrl = await createShortUrlApiLayer(__shortUrl)
         const shortUrl = __shortUrl.replaceAll('.', '@').replace('https://', '')
         increment(totalShortLinks)
         set(maskOf, shortUrl, _shortUrl)
@@ -1067,7 +1069,7 @@ bot.on('message', async msg => {
       const { url } = info
       const slug = nanoid()
       const __shortUrl = `${SELF_URL}/${slug}`
-      const _shortUrl = await createCustomShortUrlCuttly(__shortUrl, message)
+      const _shortUrl = await createShortUrlApiLayer(__shortUrl, message)
       const shortUrl = __shortUrl.replaceAll('.', '@').replace('https://', '')
       increment(totalShortLinks)
       set(maskOf, shortUrl, _shortUrl)
